@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export const Footer = () => {
   return (
-    <footer className="flex items-center w-full p-6 bg-background z-50">
+    <footer className="dark:bg-[#1f1f1f] flex items-center w-full p-6 bg-background z-50">
       <Button variant={"link"}>
         <Logo />
       </Button>

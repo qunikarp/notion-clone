@@ -4,7 +4,15 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
+import { useConvexAuth } from "convex/react";
+import { Spinner } from "@/components/spinner";
+import Link from "next/link";
+import { SignInButton } from "@clerk/clerk-react";
+import { Arrow } from "@radix-ui/react-dropdown-menu";
+
 export const Header = () => {
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
   return (
     <div className="max-w-3xl space-y-4">
       <h1 className="text-3xl sm:text-5xl md:text-6xl">
@@ -16,10 +24,27 @@ export const Header = () => {
         combines the simplicity of a note-taking app with the power of a project
         management tool.
       </h2>
-      <Button>
-        Join Hikki Beta
-        <ArrowRight className="ml-2 w-4 h-4" />
-      </Button>
+      {isLoading && (
+        <div className="w-full flex items-center justify-center">
+          <Spinner size="large" />
+        </div>
+      )}
+      {isAuthenticated && !isLoading && (
+        <Button variant={"link"} size="default">
+          <Link href="/documents" className="flex items-center">
+            Join workspace <ArrowRight size={16} className="ml-2" />
+          </Link>
+        </Button>
+      )}
+      {!isAuthenticated && !isLoading && (
+        <>
+          <SignInButton mode="modal">
+            <Button size="sm" variant={"link"}>
+              Sign up <ArrowRight size={16} className="ml-2" />
+            </Button>
+          </SignInButton>
+        </>
+      )}
     </div>
   );
 };
